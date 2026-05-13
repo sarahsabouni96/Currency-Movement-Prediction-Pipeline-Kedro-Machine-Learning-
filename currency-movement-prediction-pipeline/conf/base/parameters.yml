@@ -1,0 +1,81 @@
+feature_engineering:
+  rename_columns:
+    pct_change_1d: pct1
+    pct_change_7d: pct7
+    pct_change_30d: pct30
+
+    rolling_7d_vol: rolling7
+    rolling_30d_avg: rolling30
+
+    lag_1: lag_1
+    lag_2: lag_2
+    lag_3: lag_3
+    lag_5: lag_5
+    lag_7: lag_7
+    lag_10: lag_10
+    lag_14: lag_14
+
+    momentum_7_1: mom7
+    momentum_30_7: mom30
+
+    trend_strength: trend
+    vol_ratio: vol
+
+    currency: currency
+    country: country
+
+  lag_params:
+    lags: [1, 2, 3, 5, 7, 10, 14]
+
+
+training:
+  target_params:
+    shift_period: 1
+    target_column: pct1
+    new_target_name: target
+
+  train_fraction: 0.8
+
+  model_type: catboost
+
+  model_params:
+    catboost:
+      learning_rate: 0.05
+      depth: 6
+      l2_leaf_reg: 1
+      iterations: 800
+      loss_function: Logloss
+      eval_metric: Accuracy
+      verbose: 0
+      random_seed: 42
+
+    random_forest:
+      n_estimators: 100
+      max_depth: 6
+      min_samples_split: 2
+      min_samples_leaf: 1
+      max_features: "sqrt"
+      random_state: 42
+
+
+model_storage:
+  path: data/06_models
+  name: currency_movement_prediction
+
+
+ui:
+  actual_data_path: data/01_raw/currency_impact.csv
+  predictions_path: data/07_model_output/predictions.csv
+  update_interval_ms: 2000
+  default_lookback_hours: 24
+
+
+pipeline_runner:
+  batch_size: 30
+  model_path: data/06_models/latest_model
+  predictions_path: data/07_model_output/predictions.csv
+  first_timestamp: "2012-06-01 00:00:00"
+  last_timestamp: "2012-08-11 15:00:00"
+  time_increment: 1h
+  num_steps_inference: 2000
+  inference_interval_seconds: 23

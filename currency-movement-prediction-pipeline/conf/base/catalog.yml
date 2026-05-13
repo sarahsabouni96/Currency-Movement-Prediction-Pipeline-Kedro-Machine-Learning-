@@ -1,0 +1,19 @@
+train_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/currency_impact.csv
+
+inference_batch:
+  type: pandas.ParquetDataset
+  filepath: data/03_primary/inference_batch.parquet
+
+predictions_with_timestamps:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/predictions.parquet
+
+trained_model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/currency_movement_prediction.pkl
+
+metrics:
+  type: json.JSONDataset
+  filepath: data/08_reporting/metrics.json
