@@ -20,22 +20,35 @@ The objective of this project is to:
 
 ## 🏗️ Project Structure (Kedro Pipeline)
 
-The project is organized using Kedro’s standard pipeline architecture:
+The project is organized using Kedro’s modular pipeline architecture:
 
+```text
 src/
 ├── pipelines/
-│ ├── data_processing/
-│ ├── feature_engineering/
-│ ├── modeling/
-│ ├── evaluation/
+│   ├── feature_eng/
+│   ├── training/
+│   ├── inference/
+│
+├── pipeline_registry.py
+├── settings.py
+```
 
+### Pipeline Responsibilities
+
+- **feature_eng**  
+  Handles data cleaning, filtering, target construction, and feature engineering.
+
+- **training**  
+  Trains the CatBoost classification model using time-series-safe train/test splitting.
+
+- **inference**  
+  Generates predictions and evaluates model performance.
 
 Each pipeline consists of:
 
 - **Nodes** → individual transformation functions  
-- **Pipeline** → connected sequence of nodes  
-- **Catalog** → dataset management  
-
+- **Pipeline** → connected workflow of nodes  
+- **Catalog** → centralized dataset management
 ---
 
 ## ⚙️ Pipeline Stages
